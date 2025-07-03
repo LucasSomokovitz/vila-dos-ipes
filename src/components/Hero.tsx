@@ -90,23 +90,57 @@ const Hero = () => {
           <img
             src={slide.image}
             alt={slide.title}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out"
+            className={
+              (index === 5 || index === 6)
+                ? 'w-full h-full object-cover transition-transform duration-700 ease-out object-left md:object-center'
+                : 'w-full h-full object-cover transition-transform duration-700 ease-out'
+            }
           />
           {(slide.title || slide.subtitle || slide.description) && (
             <div className="absolute inset-0 z-20 flex justify-center items-center">
-              <div className="text-center text-white max-w-4xl mx-auto px-4">
+              <div
+                className={
+                  (index === 5 || index === 6)
+                    ?
+                      // Mobile: alinhado à esquerda, largura máxima 60vw, padding à esquerda de 80px
+                      'text-white max-w-4xl mx-auto px-4 text-left md:text-center sm:max-w-[60vw] sm:pl-20 sm:pr-2 sm:text-left'
+                    :
+                      // Outros slides: centralizado
+                      'text-white max-w-4xl mx-auto px-4 text-center md:text-center'
+                }
+              >
                 {slide.title && (
-                  <h1 className="text-5xl md:text-7xl font-bold mb-4 animate-fade-in-slow">
+                  <h1
+                    className={
+                      (index === 5 || index === 6)
+                        ? 'text-5xl md:text-7xl font-bold mb-4 animate-fade-in-slow sm:mx-0'
+                        : 'text-5xl md:text-7xl font-bold mb-4 animate-fade-in-slow mx-auto'
+                    }
+                  >
                     {slide.title}
                   </h1>
                 )}
                 {slide.subtitle && (
-                  <p className="text-xl md:text-2xl mb-2 animate-fade-in-slow" style={{ animationDelay: '0.3s' }}>
+                  <p
+                    className={
+                      (index === 5 || index === 6)
+                        ? 'text-xl md:text-2xl mb-2 animate-fade-in-slow sm:mx-0'
+                        : 'text-xl md:text-2xl mb-2 animate-fade-in-slow mx-auto'
+                    }
+                    style={{ animationDelay: '0.3s' }}
+                  >
                     {slide.subtitle}
                   </p>
                 )}
                 {slide.description && (
-                  <p className="text-lg md:text-xl opacity-90 animate-fade-in-slow" style={{ animationDelay: '0.6s' }}>
+                  <p
+                    className={
+                      (index === 5 || index === 6)
+                        ? 'text-lg md:text-xl opacity-90 animate-fade-in-slow sm:mx-0'
+                        : 'text-lg md:text-xl opacity-90 animate-fade-in-slow mx-auto'
+                    }
+                    style={{ animationDelay: '0.6s' }}
+                  >
                     {slide.description}
                   </p>
                 )}
@@ -116,16 +150,16 @@ const Hero = () => {
         </div>
       ))}
 
-      {/* Navigation Arrows */}
+      {/* Navigation Arrows - escondidas no mobile */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-30 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-all duration-300 ease-out"
+        className="hidden sm:block absolute left-4 top-1/2 transform -translate-y-1/2 z-30 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-all duration-300 ease-out"
       >
         <ChevronLeft className="text-white" size={24} />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-all duration-300 ease-out"
+        className="hidden sm:block absolute right-4 top-1/2 transform -translate-y-1/2 z-30 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-all duration-300 ease-out"
       >
         <ChevronRight className="text-white" size={24} />
       </button>
