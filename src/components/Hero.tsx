@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const isMobile = useIsMobile();
 
   const slides = [
     {
@@ -55,100 +57,135 @@ const Hero = () => {
     }
   ];
 
+  // Novas imagens para mobile (ordem conforme envio)
+  const mobileSlides = [
+    { image: '/uploads/1 Vila dos Ipes.png' },
+    { image: '/uploads/2 Vila dos Ipes.png' },
+    { image: '/uploads/3 Vila dos Ipes.png' },
+    { image: '/uploads/4 Vila dos Ipes.png' },
+    { image: '/uploads/5 Vila dos Ipes.png' },
+    { image: '/uploads/6 Vila dos Ipes.png' },
+  ];
+
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      if (isMobile) {
+        setCurrentSlide((prev) => (prev + 1) % mobileSlides.length);
+      } else {
+        setCurrentSlide((prev) => (prev + 1) % slides.length);
+      }
     }, 2500); // Ajustado para 2500ms (2,5 segundos por slide)
     
     return () => clearInterval(timer);
-  }, [slides.length]);
+  }, [slides.length, mobileSlides.length, isMobile]);
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
   };
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+    if (isMobile) {
+      setCurrentSlide((prev) => (prev + 1) % mobileSlides.length);
+    } else {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    if (isMobile) {
+      setCurrentSlide((prev) => (prev - 1 + mobileSlides.length) % mobileSlides.length);
+    } else {
+      setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    }
   };
 
   return (
     <section className="relative h-screen overflow-hidden">
       {/* Fundo preto fixo para suavizar a transição */}
       <div className="absolute inset-0 bg-black" />
-      {slides.map((slide, index) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-            index === currentSlide ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <div className="absolute inset-0 bg-black/40 z-10" />
-          <img
-            src={slide.image}
-            alt={slide.title}
-            className={
-              (index === 5 || index === 6)
-                ? 'w-full h-full object-cover transition-transform duration-700 ease-out object-left md:object-center'
-                : 'w-full h-full object-cover transition-transform duration-700 ease-out'
-            }
-          />
-          {(slide.title || slide.subtitle || slide.description) && (
-            <div className="absolute inset-0 z-20 flex justify-center items-center">
-              <div
+      {isMobile
+        ? mobileSlides.map((slide, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                index === currentSlide ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <img
+                src={slide.image}
+                alt={"Slide " + (index + 1)}
+                className="w-full h-full object-cover transition-transform duration-700 ease-out"
+              />
+            </div>
+          ))
+        : slides.map((slide, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                index === currentSlide ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <div className="absolute inset-0 bg-black/40 z-10" />
+              <img
+                src={slide.image}
+                alt={slide.title}
                 className={
                   (index === 5 || index === 6)
-                    ?
-                      // Mobile: alinhado à esquerda, largura máxima 60vw, padding à esquerda de 80px
-                      'text-white max-w-4xl mx-auto px-4 text-left md:text-center sm:max-w-[60vw] sm:pl-20 sm:pr-2 sm:text-left'
-                    :
-                      // Outros slides: centralizado
-                      'text-white max-w-4xl mx-auto px-4 text-center md:text-center'
+                    ? 'w-full h-full object-cover transition-transform duration-700 ease-out object-left md:object-center'
+                    : 'w-full h-full object-cover transition-transform duration-700 ease-out'
                 }
-              >
-                {slide.title && (
-                  <h1
+              />
+              {(slide.title || slide.subtitle || slide.description) && (
+                <div className="absolute inset-0 z-20 flex justify-center items-center">
+                  <div
                     className={
                       (index === 5 || index === 6)
-                        ? 'text-5xl md:text-7xl font-bold mb-4 animate-fade-in-slow sm:mx-0'
-                        : 'text-5xl md:text-7xl font-bold mb-4 animate-fade-in-slow mx-auto'
+                        ?
+                          'text-white max-w-4xl mx-auto px-4 text-left md:text-center sm:max-w-[60vw] sm:pl-20 sm:pr-2 sm:text-left'
+                        :
+                          'text-white max-w-4xl mx-auto px-4 text-center md:text-center'
                     }
                   >
-                    {slide.title}
-                  </h1>
-                )}
-                {slide.subtitle && (
-                  <p
-                    className={
-                      (index === 5 || index === 6)
-                        ? 'text-xl md:text-2xl mb-2 animate-fade-in-slow sm:mx-0'
-                        : 'text-xl md:text-2xl mb-2 animate-fade-in-slow mx-auto'
-                    }
-                    style={{ animationDelay: '0.3s' }}
-                  >
-                    {slide.subtitle}
-                  </p>
-                )}
-                {slide.description && (
-                  <p
-                    className={
-                      (index === 5 || index === 6)
-                        ? 'text-lg md:text-xl opacity-90 animate-fade-in-slow sm:mx-0'
-                        : 'text-lg md:text-xl opacity-90 animate-fade-in-slow mx-auto'
-                    }
-                    style={{ animationDelay: '0.6s' }}
-                  >
-                    {slide.description}
-                  </p>
-                )}
-              </div>
+                    {slide.title && (
+                      <h1
+                        className={
+                          (index === 5 || index === 6)
+                            ? 'text-5xl md:text-7xl font-bold mb-4 animate-fade-in-slow sm:mx-0'
+                            : 'text-5xl md:text-7xl font-bold mb-4 animate-fade-in-slow mx-auto'
+                        }
+                      >
+                        {slide.title}
+                      </h1>
+                    )}
+                    {slide.subtitle && (
+                      <p
+                        className={
+                          (index === 5 || index === 6)
+                            ? 'text-xl md:text-2xl mb-2 animate-fade-in-slow sm:mx-0'
+                            : 'text-xl md:text-2xl mb-2 animate-fade-in-slow mx-auto'
+                        }
+                        style={{ animationDelay: '0.3s' }}
+                      >
+                        {slide.subtitle}
+                      </p>
+                    )}
+                    {slide.description && (
+                      <p
+                        className={
+                          (index === 5 || index === 6)
+                            ? 'text-lg md:text-xl opacity-90 animate-fade-in-slow sm:mx-0'
+                            : 'text-lg md:text-xl opacity-90 animate-fade-in-slow mx-auto'
+                        }
+                        style={{ animationDelay: '0.6s' }}
+                      >
+                        {slide.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      ))}
+          ))}
 
       {/* Navigation Arrows - escondidas no mobile */}
       <button
@@ -166,15 +203,25 @@ const Hero = () => {
 
       {/* Dots Navigation */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex space-x-3">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ease-out ${
-              index === currentSlide ? 'bg-white' : 'bg-white/50'
-            }`}
-          />
-        ))}
+        {isMobile
+          ? mobileSlides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ease-out ${
+                  index === currentSlide ? 'bg-white' : 'bg-white/50'
+                }`}
+              />
+            ))
+          : slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ease-out ${
+                  index === currentSlide ? 'bg-white' : 'bg-white/50'
+                }`}
+              />
+            ))}
       </div>
     </section>
   );

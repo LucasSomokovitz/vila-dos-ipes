@@ -21,7 +21,7 @@ const Footer = () => {
           Registro de Incorporação: R.11-18983 do 2º Ofício de Registro de Imóveis de Blumenau/SC.
         </div>
         <div className="text-gray-500 text-xs text-center md:text-right">
-          Rua Linus Reiter, 484, Blumenau, SC
+          Rua Linus Reiter, 484 – Velha, Blumenau, SC
         </div>
       </div>
     </footer>

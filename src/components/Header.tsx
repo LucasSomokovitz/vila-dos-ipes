@@ -101,14 +101,14 @@ const Header = () => {
             >
               <FaWhatsapp size={24} />
             </a>
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={`p-2 transition-colors duration-500 ease-out ${
-                isScrolled ? 'text-gray-800' : 'text-white drop-shadow-lg'
-              }`}
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+              isScrolled ? 'text-gray-800' : 'text-white drop-shadow-lg'
+            }`}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
           </div>
         </div>
 

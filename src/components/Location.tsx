@@ -3,7 +3,7 @@ import { MapPin, Clock, Car } from 'lucide-react';
 
 const Location = () => {
   const handleAddressClick = () => {
-    const address = "Rua Linus Reiter, 484 – Blumenau, SC";
+    const address = "Rua Linus Reiter, 484 – Velha, Blumenau, SC";
     const encodedAddress = encodeURIComponent(address);
     
     // Detectar se é mobile
@@ -49,7 +49,7 @@ const Location = () => {
                 onClick={handleAddressClick}
                 title="Clique para abrir no Google Maps"
               >
-                Rua Linus Reiter, 484 – Blumenau, SC
+                Rua Linus Reiter, 484 – Velha, Blumenau, SC
               </p>
             </div>
 
