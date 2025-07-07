@@ -57,25 +57,34 @@ const Hero = () => {
     }
   ];
 
-  // Novas imagens para mobile (ordem conforme envio)
+  // Novas imagens para mobile (5 Vila dos Ipes como primeiro slide)
   const mobileSlides = [
-    { image: '/uploads/1 Vila dos Ipes.png' },
-    { image: '/uploads/2 Vila dos Ipes.png' },
-    { image: '/uploads/3 Vila dos Ipes.png' },
-    { image: '/uploads/4 Vila dos Ipes.png' },
-    { image: '/uploads/5 Vila dos Ipes.png' },
-    { image: '/uploads/6 Vila dos Ipes.png' },
+    { image: '/uploads/5 Vila dos Ipes.png' }, // Slide 5
+    { image: '/uploads/1 Vila dos Ipes.png' }, // Slide 1
+    { image: '/uploads/3 Vila dos Ipes.png' }, // Slide 3
+    { image: '/uploads/6 Vila dos Ipes.png' }, // Slide 6
   ];
 
+  // Sempre iniciar pelo slide 3 no mobile
   useEffect(() => {
-    const timer = setInterval(() => {
-      if (isMobile) {
-        setCurrentSlide((prev) => (prev + 1) % mobileSlides.length);
-      } else {
-        setCurrentSlide((prev) => (prev + 1) % slides.length);
-      }
-    }, 2500); // Ajustado para 2500ms (2,5 segundos por slide)
-    
+    if (isMobile) {
+      setCurrentSlide(1); // índice do slide 3
+    } else {
+      setCurrentSlide(0);
+    }
+  }, [isMobile]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isMobile) {
+      timer = setInterval(() => {
+        setCurrentSlide((prev) => ((prev + 1) % mobileSlides.length));
+      }, 2500);
+    } else {
+      timer = setInterval(() => {
+        setCurrentSlide((prev) => ((prev + 1) % slides.length));
+      }, 2500);
+    }
     return () => clearInterval(timer);
   }, [slides.length, mobileSlides.length, isMobile]);
 
