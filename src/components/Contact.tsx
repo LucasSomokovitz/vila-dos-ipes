@@ -20,21 +20,9 @@ const Contact = () => {
   };
 
   const generateWhatsAppLink = () => {
-    const phoneNumber = '5547999928103'; // Número com código do país
-    const message = `Olá, Elton Carlos Pasternak,
-
-Encontrei seus contatos através do site da Vila dos Ipês.
-
-Tenho interesse nos lotes que estão à venda por lá e gostaria de obter mais informações.
-
-Você poderia me dar mais detalhes sobre as opções disponíveis, como localização, tamanhos e valores?
-
-Fico à disposição para conversarmos quando for melhor para você.
-
-Obrigado!`;
-
+    const phoneNumber = '554792489299'; // Número comercial atualizado
+    const message = `Olá! Vim pelo site do Residencial Vila dos Ipês e gostaria de falar com o WhatsApp comercial.`;
     const encodedMessage = encodeURIComponent(message);
-    
     // Link que funciona tanto no desktop quanto no mobile
     return `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
   };

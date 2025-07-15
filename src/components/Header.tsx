@@ -24,8 +24,8 @@ const Header = () => {
   };
 
   // Função para gerar o link do WhatsApp com mensagem corretamente codificada
-  const whatsappNumber = '554799928103';
-  const whatsappMessage = 'Vim pelo site Vila dos Ipês e gostaria de tirar algumas dúvidas.';
+  const whatsappNumber = '554792489299';
+  const whatsappMessage = 'Olá! Vim pelo site do Residencial Vila dos Ipês e gostaria de falar com o WhatsApp comercial.';
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
@@ -86,7 +86,7 @@ const Header = () => {
               className="ml-2 flex items-center justify-center bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-full p-2 transition-colors duration-300"
               title="Fale conosco pelo WhatsApp"
             >
-              <FaWhatsapp size={24} />
+              <FaWhatsapp size={24} color="#25D366" />
             </a>
           </nav>
 
@@ -99,7 +99,7 @@ const Header = () => {
               className={`flex items-center justify-center bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-full p-2 transition-colors duration-300`}
               title="Fale conosco pelo WhatsApp"
             >
-              <FaWhatsapp size={24} />
+              <FaWhatsapp size={24} color="#25D366" />
             </a>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
