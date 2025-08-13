@@ -57,180 +57,131 @@ const Hero = () => {
     }
   ];
 
-  // Novas imagens para mobile (5 Vila dos Ipes como primeiro slide)
-  const mobileSlides = [
-    { image: '/uploads/5 Vila dos Ipes.png' }, // Slide 5
-    { image: '/uploads/1 Vila dos Ipes.png' }, // Slide 1
-    { image: '/uploads/3 Vila dos Ipes.png' }, // Slide 3
-    { image: '/uploads/6 Vila dos Ipes.png' }, // Slide 6
-  ];
-
-  // Sempre iniciar pelo slide 3 no mobile
+  // Sempre iniciar pelo slide 0
   useEffect(() => {
-    if (isMobile) {
-      setCurrentSlide(1); // índice do slide 3
-    } else {
-      setCurrentSlide(0);
-    }
-  }, [isMobile]);
+    setCurrentSlide(0);
+  }, []);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (isMobile) {
-      timer = setInterval(() => {
-        setCurrentSlide((prev) => ((prev + 1) % mobileSlides.length));
-      }, 2500);
-    } else {
-      timer = setInterval(() => {
-        setCurrentSlide((prev) => ((prev + 1) % slides.length));
-      }, 2500);
-    }
+    timer = setInterval(() => {
+      setCurrentSlide((prev) => ((prev + 1) % slides.length));
+    }, 2500);
     return () => clearInterval(timer);
-  }, [slides.length, mobileSlides.length, isMobile]);
+  }, [slides.length]);
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
   };
 
   const nextSlide = () => {
-    if (isMobile) {
-      setCurrentSlide((prev) => (prev + 1) % mobileSlides.length);
-    } else {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
   const prevSlide = () => {
-    if (isMobile) {
-      setCurrentSlide((prev) => (prev - 1 + mobileSlides.length) % mobileSlides.length);
-    } else {
-      setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-    }
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className={`relative ${isMobile ? 'h-[56.25vw]' : 'h-[70vh]'} overflow-hidden`}>
       {/* Fundo preto fixo para suavizar a transição */}
       <div className="absolute inset-0 bg-black" />
-      {isMobile
-        ? mobileSlides.map((slide, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                index === currentSlide ? 'opacity-100' : 'opacity-0'
-              }`}
-            >
-              <img
-                src={slide.image}
-                alt={"Slide " + (index + 1)}
-                className="w-full h-full object-cover transition-transform duration-700 ease-out"
-              />
-            </div>
-          ))
-        : slides.map((slide, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                index === currentSlide ? 'opacity-100' : 'opacity-0'
-              }`}
-            >
-              <div className="absolute inset-0 bg-black/40 z-10" />
-              <img
-                src={slide.image}
-                alt={slide.title}
+      {slides.map((slide, index) => (
+        <div
+          key={index}
+          className={`${isMobile ? 'absolute' : 'absolute'} inset-0 transition-opacity duration-700 ease-in-out ${
+            index === currentSlide ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <div className={`${isMobile ? 'absolute' : 'absolute'} inset-0 bg-black/40 z-10`} />
+          <img
+            src={slide.image}
+            alt={slide.title}
+            className={
+              isMobile 
+                ? 'w-full aspect-video object-cover' // 16:9 para mobile
+                : (index === 5 || index === 6)
+                  ? 'w-full h-full object-cover transition-transform duration-700 ease-out object-left md:object-center'
+                  : 'w-full h-full object-cover transition-transform duration-700 ease-out'
+            }
+          />
+          {(slide.title || slide.subtitle || slide.description) && (
+            <div className={`${isMobile ? 'absolute' : 'absolute'} inset-0 z-20 flex justify-center items-center`}>
+              <div
                 className={
                   (index === 5 || index === 6)
-                    ? 'w-full h-full object-cover transition-transform duration-700 ease-out object-left md:object-center'
-                    : 'w-full h-full object-cover transition-transform duration-700 ease-out'
+                    ?
+                      'text-white max-w-4xl mx-auto px-4 text-left md:text-center sm:max-w-[60vw] sm:pl-20 sm:pr-2 sm:text-left'
+                    :
+                      'text-white max-w-4xl mx-auto px-4 text-center md:text-center'
                 }
-              />
-              {(slide.title || slide.subtitle || slide.description) && (
-                <div className="absolute inset-0 z-20 flex justify-center items-center">
-                  <div
+              >
+                {slide.title && (
+                  <h1
                     className={
                       (index === 5 || index === 6)
-                        ?
-                          'text-white max-w-4xl mx-auto px-4 text-left md:text-center sm:max-w-[60vw] sm:pl-20 sm:pr-2 sm:text-left'
-                        :
-                          'text-white max-w-4xl mx-auto px-4 text-center md:text-center'
+                        ? 'text-5xl md:text-7xl font-bold mb-4 animate-fade-in-slow sm:mx-0'
+                        : 'text-5xl md:text-7xl font-bold mb-4 animate-fade-in-slow mx-auto'
                     }
                   >
-                    {slide.title && (
-                      <h1
-                        className={
-                          (index === 5 || index === 6)
-                            ? 'text-5xl md:text-7xl font-bold mb-4 animate-fade-in-slow sm:mx-0'
-                            : 'text-5xl md:text-7xl font-bold mb-4 animate-fade-in-slow mx-auto'
-                        }
-                      >
-                        {slide.title}
-                      </h1>
-                    )}
-                    {slide.subtitle && (
-                      <p
-                        className={
-                          (index === 5 || index === 6)
-                            ? 'text-xl md:text-2xl mb-2 animate-fade-in-slow sm:mx-0'
-                            : 'text-xl md:text-2xl mb-2 animate-fade-in-slow mx-auto'
-                        }
-                        style={{ animationDelay: '0.3s' }}
-                      >
-                        {slide.subtitle}
-                      </p>
-                    )}
-                    {slide.description && (
-                      <p
-                        className={
-                          (index === 5 || index === 6)
-                            ? 'text-lg md:text-xl opacity-90 animate-fade-in-slow sm:mx-0'
-                            : 'text-lg md:text-xl opacity-90 animate-fade-in-slow mx-auto'
-                        }
-                        style={{ animationDelay: '0.6s' }}
-                      >
-                        {slide.description}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              )}
+                    {slide.title}
+                  </h1>
+                )}
+                {slide.subtitle && (
+                  <p
+                    className={
+                      (index === 5 || index === 6)
+                        ? 'text-xl md:text-2xl mb-2 animate-fade-in-slow sm:mx-0'
+                        : 'text-xl md:text-2xl mb-2 animate-fade-in-slow mx-auto'
+                    }
+                    style={{ animationDelay: '0.3s' }}
+                  >
+                    {slide.subtitle}
+                  </p>
+                )}
+                {slide.description && (
+                  <p
+                    className={
+                      (index === 5 || index === 6)
+                        ? 'text-lg md:text-xl opacity-90 animate-fade-in-slow sm:mx-0'
+                        : 'text-lg md:text-xl opacity-90 animate-fade-in-slow mx-auto'
+                    }
+                    style={{ animationDelay: '0.6s' }}
+                  >
+                    {slide.description}
+                  </p>
+                )}
+              </div>
             </div>
-          ))}
+          )}
+        </div>
+      ))}
 
-      {/* Navigation Arrows - escondidas no mobile */}
+      {/* Navigation Arrows */}
       <button
         onClick={prevSlide}
-        className="hidden sm:block absolute left-4 top-1/2 transform -translate-y-1/2 z-30 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-all duration-300 ease-out"
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-30 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-all duration-300 ease-out"
       >
         <ChevronLeft className="text-white" size={24} />
       </button>
       <button
         onClick={nextSlide}
-        className="hidden sm:block absolute right-4 top-1/2 transform -translate-y-1/2 z-30 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-all duration-300 ease-out"
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-all duration-300 ease-out"
       >
         <ChevronRight className="text-white" size={24} />
       </button>
 
       {/* Dots Navigation */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex space-x-3">
-        {isMobile
-          ? mobileSlides.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ease-out ${
-                  index === currentSlide ? 'bg-white' : 'bg-white/50'
-                }`}
-              />
-            ))
-          : slides.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ease-out ${
-                  index === currentSlide ? 'bg-white' : 'bg-white/50'
-                }`}
-              />
-            ))}
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ease-out ${
+              index === currentSlide ? 'bg-white' : 'bg-white/50'
+            }`}
+          />
+        ))}
       </div>
     </section>
   );
