@@ -83,17 +83,16 @@ const Hero = () => {
   };
 
   return (
-    <section className={`relative ${isMobile ? 'h-[56.25vw]' : 'h-[70vh]'} overflow-hidden`}>
+    <section className={`relative ${isMobile ? 'h-[56.25vw] mt-20' : 'h-[70vh]'} overflow-hidden`}>
       {/* Fundo preto fixo para suavizar a transição */}
       <div className="absolute inset-0 bg-black" />
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`${isMobile ? 'absolute' : 'absolute'} inset-0 transition-opacity duration-700 ease-in-out ${
-            index === currentSlide ? 'opacity-100' : 'opacity-0'
-          }`}
+          className="absolute inset-0 transition-opacity duration-700 ease-in-out"
+          style={{ opacity: index === currentSlide ? 1 : 0 }}
         >
-          <div className={`${isMobile ? 'absolute' : 'absolute'} inset-0 bg-black/40 z-10`} />
+          <div className="absolute inset-0 bg-black/40 z-10" />
           <img
             src={slide.image}
             alt={slide.title}
@@ -106,7 +105,7 @@ const Hero = () => {
             }
           />
           {(slide.title || slide.subtitle || slide.description) && (
-            <div className={`${isMobile ? 'absolute' : 'absolute'} inset-0 z-20 flex justify-center items-center`}>
+            <div className="absolute inset-0 z-20 flex justify-center items-center">
               <div
                 className={
                   (index === 5 || index === 6)
